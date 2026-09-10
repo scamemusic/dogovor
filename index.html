@@ -86,6 +86,14 @@
   body.exporting .bar{display:none !important}
   body.exporting .wrap{padding:0 !important}
   body.exporting .page{box-shadow:none !important;transform:none !important}
+  /* html2canvas не умеет переносы по слогам и выключку: он переразмечает текст
+     заново, строки расходятся и слова наезжают друг на друга. На время сборки
+     PDF отключаем и то, и другое. */
+  body.exporting #doc{
+    hyphens:none !important;-webkit-hyphens:none !important;
+    text-align:left !important;text-rendering:geometricPrecision;
+  }
+  body.exporting #doc p,body.exporting #doc li,body.exporting #doc td{text-align:left !important}
   body.exporting .stage{width:auto !important;height:auto !important}
   body.exporting .fld{display:inline !important;min-width:0 !important;min-height:0 !important}
 
@@ -633,7 +641,10 @@
       margin:     [18, 20, 18, 16],
       filename:   fileBase() + '.pdf',
       image:      { type:'jpeg', quality:0.9 },
-      html2canvas:{ scale:2, backgroundColor:'#ffffff', logging:false, windowWidth:document.getElementById('doc').scrollWidth },
+      /* windowWidth здесь не задаём: на телефоне он расходился с настоящей
+         шириной окна, html2canvas мерил текст в одной системе координат,
+         а рисовал в другой — строки смещались */
+      html2canvas:{ scale:2, backgroundColor:'#ffffff', logging:false },
       jsPDF:      { unit:'mm', format:'a4', orientation:'portrait' },
       pagebreak:  { mode:['css','legacy'], avoid:['table','h3','li'] }
     }).from(document.getElementById('doc')).save().then(function(){
