@@ -5,43 +5,120 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
-<title>Договор на бит — заполнение</title>
+<meta name="theme-color" content="#08070d">
+<title>Scame — договор на бит</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-  :root{ --bg:#eef0f3; --red:#d00000; --line:#e3e5e9; }
+  :root{
+    --bg:#08070d; --bg2:#110e1c; --ink:#efeaff; --muted:#9d95bf;
+    --lilac:#c4bcff; --lilac2:#a99cff; --violet:#7c4dff; --pink:#e3a6ff;
+    --line:rgba(196,188,255,.16); --card:rgba(22,18,38,.72);
+    --red:#d00000;
+    --ui:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    --logo:"Unbounded","Arial Black",Impact,sans-serif;
+  }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
-  body{background:var(--bg);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--ui);min-height:100vh;overflow-x:hidden}
 
-  /* ---------- панель ---------- */
+  /* ---------- глянцевые пузыри на фоне ---------- */
+  .orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .orb{position:absolute;border-radius:50%;filter:blur(.5px);opacity:.9}
+  .orb::after{
+    content:"";position:absolute;inset:8% 14% auto auto;width:34%;height:22%;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(255,255,255,.75),rgba(255,255,255,0));transform:rotate(-30deg);
+  }
+  .o1{width:520px;height:520px;left:-180px;top:-140px;
+      background:radial-gradient(circle at 65% 35%,#3a1f7a 0%,#1b1033 45%,rgba(8,7,13,0) 70%)}
+  .o2{width:380px;height:380px;right:-120px;top:22%;
+      background:radial-gradient(circle at 30% 30%,#e7c9ff 0%,#9b5cff 22%,#3b1a78 48%,rgba(8,7,13,0) 72%)}
+  .o3{width:260px;height:260px;left:8%;bottom:-90px;
+      background:radial-gradient(circle at 40% 30%,#b99bff 0%,#5a2fb8 35%,#1d1036 60%,rgba(8,7,13,0) 75%)}
+  .o4{width:140px;height:140px;right:18%;bottom:12%;
+      background:radial-gradient(circle at 35% 30%,#fff 0%,#d9b8ff 18%,#7b3ff0 45%,rgba(8,7,13,0) 72%);opacity:.55}
+  .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.06;
+    background-image:radial-gradient(rgba(255,255,255,.9) .6px,transparent .6px);background-size:3px 3px}
+
+  .shell{position:relative;z-index:1}
+
+  /* ---------- логотип ---------- */
+  .logo{font:900 clamp(56px,11vw,120px)/.9 var(--logo);letter-spacing:-.04em;margin:0;
+    background:linear-gradient(180deg,#e9e5ff 0%,#b9b1ff 55%,#8f82f0 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .tag{display:flex;align-items:center;gap:14px;margin:10px 0 0;font:600 clamp(15px,2.4vw,20px)/1 var(--logo);color:#e8e2ff}
+  .tag::after{content:"";flex:1;max-width:220px;height:1px;background:linear-gradient(90deg,var(--lilac),rgba(196,188,255,0))}
+  .spark{color:#ffe7b3;font-size:18px}
+
+  /* ---------- экран выбора ---------- */
+  #chooser{max-width:980px;margin:0 auto;padding:clamp(40px,9vh,90px) 20px 60px}
+  #chooser .lead{color:var(--muted);max-width:560px;margin:22px 0 34px;font-size:15px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{
+    text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:18px;padding:24px 22px 22px;
+    background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);
+    font:inherit;transition:transform .15s,border-color .15s,box-shadow .15s;position:relative;overflow:hidden;
+  }
+  .card:hover,.card:focus-visible{transform:translateY(-2px);border-color:rgba(196,188,255,.5);
+    box-shadow:0 10px 40px rgba(124,77,255,.25);outline:none}
+  .card::before{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,rgba(227,166,255,.55),rgba(124,77,255,.15) 50%,transparent 70%)}
+  .card .kicker{font:600 11px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--lilac)}
+  .card h2{font:800 24px/1.1 var(--logo);margin:10px 0 12px;letter-spacing:-.01em}
+  .card ul{margin:0 0 18px;padding:0;list-style:none;color:#cfc8ee;font-size:14px}
+  .card li{padding:5px 0 5px 20px;position:relative}
+  .card li::before{content:"✦";position:absolute;left:0;top:5px;color:var(--pink);font-size:11px}
+  .card .go{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:#0c0916;
+    background:linear-gradient(135deg,#e7e2ff,#b3a8ff);padding:10px 16px;border-radius:10px}
+  .foot{margin-top:40px;color:var(--muted);font-size:12px;max-width:620px}
+
+  /* ---------- экран договора ---------- */
+  #editor[hidden],#chooser[hidden]{display:none !important}
   .bar{
-    position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);
-    display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    padding:10px 18px;background:rgba(10,8,18,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
   }
-  .bar .title{font-weight:700;font-size:14px;margin-right:auto}
-  .bar .tip{color:#6b7280;font-size:12px;flex-basis:100%;order:3;margin:0}
-  .counter{font-size:12px;color:#6b7280;white-space:nowrap}
-  .counter b{color:var(--red)}
-  .counter.done b{color:#0a7d32}
-  button{
-    padding:9px 16px;border:none;border-radius:7px;cursor:pointer;font:600 13px/1 inherit;white-space:nowrap;
-  }
-  #btn-pdf{background:#111;color:#fff}
-  #btn-doc{background:#eceef1;color:#111}
-  button:hover{opacity:.87}
-  button:disabled{opacity:.5;cursor:progress}
+  .back{background:transparent;color:var(--lilac);border:1px solid var(--line);padding:8px 12px;border-radius:9px;font:600 13px var(--ui);cursor:pointer}
+  .back:hover{border-color:var(--lilac)}
+  .bar .mini{font:900 18px/1 var(--logo);letter-spacing:-.03em;color:var(--lilac)}
+  .bar .kind{font-weight:700;margin-right:auto}
+  .counter{font-size:12px;color:var(--muted);white-space:nowrap}
+  .counter b{color:#ff8b8b}
+  .counter.done b{color:#8dffb5}
+  .zoom{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+  .zbtn{padding:7px 10px;background:rgba(196,188,255,.1);color:var(--ink);border:1px solid var(--line);border-radius:8px;font:600 14px/1 var(--ui);min-width:34px;cursor:pointer}
+  .zbtn.wide{font-size:12px}
+  #z-val{min-width:42px;text-align:center;font-variant-numeric:tabular-nums}
+  .btn{padding:10px 16px;border:none;border-radius:10px;cursor:pointer;font:700 13px/1 var(--ui);white-space:nowrap}
+  #btn-pdf{background:linear-gradient(135deg,#ece8ff,#b3a8ff);color:#0c0916}
+  #btn-doc{background:rgba(196,188,255,.12);color:var(--ink);border:1px solid var(--line)}
+  .btn:hover{filter:brightness(1.08)}
+  .btn:disabled{opacity:.55;cursor:progress}
 
-  .zoom{display:flex;align-items:center;gap:4px;font-size:12px;color:#6b7280}
-  .zbtn{padding:6px 10px;background:#eceef1;color:#111;border-radius:6px;font-size:14px;line-height:1;min-width:34px}
-  .zbtn.wide{font-size:12px;min-width:auto}
-  #z-val{min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+  /* инструкция */
+  .guide{max-width:calc(210mm + 40px);margin:18px auto 0;padding:0 20px}
+  .guide details{border:1px solid var(--line);border-radius:14px;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .guide summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:700;display:flex;align-items:center;gap:10px}
+  .guide summary::-webkit-details-marker{display:none}
+  .guide summary::after{content:"＋";margin-left:auto;color:var(--lilac)}
+  .guide details[open] summary::after{content:"－"}
+  .guide ol{margin:0;padding:0 18px 16px 38px;color:#d8d2f5}
+  .guide li{margin:0 0 7px}
+  .guide li b{color:#fff}
+  .guide .red{color:#ff8b8b;font-weight:700}
+  .trk{display:flex;align-items:center;gap:10px;margin:0 18px 16px;padding:12px 14px;border-radius:10px;
+    background:rgba(124,77,255,.14);border:1px solid rgba(196,188,255,.28);cursor:pointer;font-weight:600}
+  .trk input{width:18px;height:18px;accent-color:var(--violet)}
+  .trk[hidden]{display:none}
 
-  /* ---------- страница ---------- */
-  .wrap{padding:24px 16px 60px;display:flex;justify-content:center;overflow-x:auto}
+  .wrap{padding:18px 16px 70px;display:flex;justify-content:center;overflow-x:auto}
   .stage{position:relative;flex:none}
-  .page{background:#fff;width:210mm;padding:18mm 16mm 18mm 20mm;box-shadow:0 2px 18px rgba(0,0,0,.10);transform-origin:top left}
+  .page{background:#fff;width:210mm;padding:18mm 16mm 18mm 20mm;box-shadow:0 20px 70px rgba(0,0,0,.55),0 0 0 1px rgba(196,188,255,.15);transform-origin:top left;border-radius:2px}
 
-  /* ---------- договор ---------- */
+  /* ---------- сам договор ---------- */
   #doc{font-family:"Times New Roman",Times,serif;font-size:10.5pt;line-height:1.35;color:#000;text-align:justify;hyphens:auto}
   #doc h1{font-size:13pt;text-align:center;margin:0 0 2mm;text-transform:uppercase;letter-spacing:.3px}
   #doc h2.sub{font-size:11pt;font-weight:normal;text-align:center;margin:0 0 1mm}
@@ -51,6 +128,7 @@
   #doc p{margin:0 0 2.2mm;orphans:2;widows:2}
   #doc ul{margin:0 0 2.2mm;padding-left:9mm;list-style:none}
   #doc li{margin:0 0 1.6mm}
+  #doc li[hidden]{display:none}
   #doc table.id{border-collapse:collapse;width:100%;margin:2mm 0 3mm;font-size:10pt;page-break-inside:avoid;break-inside:avoid}
   #doc table.id td,#doc table.id th{border:.5pt solid #000;padding:1.2mm 2mm;text-align:left;vertical-align:top}
   #doc table.id th{font-weight:bold;background:#f2f2f2}
@@ -61,96 +139,143 @@
   #doc .party{font-weight:bold;margin-bottom:2mm}
   #doc .sigline{margin-top:9mm}
 
-  /* ---------- поля прямо в тексте ---------- */
+  /* поля в тексте */
   .fld,.out{font-weight:bold;padding:0 2px;border-radius:2px}
-
-  /* поля, которые заполняет человек */
   .fld{cursor:text;background:#fffbe6;box-shadow:inset 0 -1px 0 #e0d9b0}
   .fld:hover{background:#fff4c2}
-  .fld:focus{outline:2px solid #111;outline-offset:1px;background:#fff}
+  .fld:focus{outline:2px solid #7c4dff;outline-offset:1px;background:#fff}
   .fld:empty{background:#ffecec;box-shadow:inset 0 -1px 0 #f0b4b4}
   .fld:empty:hover{background:#ffdcdc}
   .fld:empty::before{content:attr(data-ph);color:var(--red);font-weight:bold}
-  /* нажал — подсказка исчезает, курсор сразу в поле */
   .fld:focus:empty::before{content:''}
   .fld:focus:empty{display:inline-block;min-width:90px}
-
-  /* поля, которые считаются сами — кликать не нужно, красным не помечаем */
   .out{background:#f1f3f6;box-shadow:inset 0 -1px 0 #d5d9e0;cursor:default}
   .out:empty::before{content:attr(data-ph);color:#8a92a0;font-weight:normal;font-style:italic}
 
-  /* при экспорте убираем подсветку */
-  body.exporting .fld,body.exporting .out{background:none !important;box-shadow:none !important;padding:0 !important}
-  body.exporting .fld:empty::before{color:var(--red);border-bottom:.6pt dotted var(--red)}
-  body.exporting .out:empty::before{color:#000;font-weight:bold;font-style:normal}
-  body.exporting .bar{display:none !important}
-  body.exporting .wrap{padding:0 !important}
-  body.exporting .page{box-shadow:none !important;transform:none !important}
-  /* html2canvas не умеет переносы по слогам и выключку: он переразмечает текст
-     заново, строки расходятся и слова наезжают друг на друга. На время сборки
-     PDF отключаем и то, и другое. */
-  body.exporting #doc{
-    hyphens:none !important;-webkit-hyphens:none !important;
-    text-align:left !important;text-rendering:geometricPrecision;
-  }
-  body.exporting #doc p,body.exporting #doc li,body.exporting #doc td{text-align:left !important}
-  body.exporting .stage{width:auto !important;height:auto !important}
-  body.exporting .fld{display:inline !important;min-width:0 !important;min-height:0 !important}
-
-  /* ---------- мобильные ---------- */
-  @media screen and (max-width:900px){
-    .wrap{padding:10px 8px 40px;justify-content:flex-start}
-    .bar{padding:8px 10px;gap:8px}
-    .bar .title{font-size:13px;width:100%;margin:0}
-    .bar .tip{font-size:11px;order:4}
-    .counter{order:2}
-    .zoom{order:3;margin-left:auto}
-    #btn-pdf,#btn-doc{order:5;flex:1 1 45%;padding:12px 8px}
-    .zbtn{padding:8px 12px}
-  }
-
-  /* пальцем нужно попасть по полю, поэтому на тач-экране они крупнее */
-  body.touch .fld{
-    display:inline-block;min-height:1.6em;padding:1px 5px;
-    -webkit-tap-highlight-color:rgba(208,0,0,.15);
-    -webkit-user-select:text;user-select:text;
-  }
+  body.touch .fld{display:inline-block;min-height:1.6em;padding:1px 5px;-webkit-tap-highlight-color:rgba(124,77,255,.2);-webkit-user-select:text;user-select:text}
   body.touch .fld:empty{min-width:80px}
   body.touch .fld:focus:empty{min-width:110px}
+
+  /* ---------- сборка PDF ---------- */
+  body.exporting{background:#fff}
+  body.exporting .orbs,body.exporting .grain,body.exporting .bar,body.exporting .guide{display:none !important}
+  body.exporting .wrap{padding:0 !important}
+  body.exporting .page{box-shadow:none !important;transform:none !important;border-radius:0}
+  body.exporting .stage{width:auto !important;height:auto !important}
+  body.exporting .fld,body.exporting .out{background:none !important;box-shadow:none !important;padding:0 !important;display:inline !important;min-width:0 !important;min-height:0 !important}
+  body.exporting .fld:empty::before{color:var(--red);border-bottom:.6pt dotted var(--red)}
+  body.exporting .out:empty::before{color:#000;font-weight:bold;font-style:normal}
+  /* html2canvas не умеет переносы по слогам и выключку по ширине */
+  body.exporting #doc{hyphens:none !important;-webkit-hyphens:none !important;text-align:left !important;text-rendering:geometricPrecision}
+  body.exporting #doc p,body.exporting #doc li,body.exporting #doc td{text-align:left !important}
+
+  /* ---------- мобильные ---------- */
+  @media screen and (max-width:760px){
+    .cards{grid-template-columns:1fr}
+  }
+  @media screen and (max-width:900px){
+    .wrap{padding:12px 8px 40px;justify-content:flex-start}
+    .bar{padding:8px 10px;gap:8px}
+    .bar .kind{font-size:13px}
+    .counter{order:3}
+    .zoom{order:4;margin-left:auto}
+    #btn-pdf,#btn-doc{order:5;flex:1 1 45%;padding:12px 8px}
+    .guide{padding:0 10px}
+  }
 
   /* ---------- печать (запасной путь) ---------- */
   @page{size:A4;margin:18mm 16mm 18mm 20mm}
   @media print{
-    body{background:#fff}
-    .bar{display:none !important}
+    body{background:#fff;color:#000}
+    .orbs,.grain,.bar,.guide,#chooser{display:none !important}
     .wrap{padding:0 !important;display:block !important;overflow:visible !important}
     .stage{width:auto !important;height:auto !important}
-    .page{width:auto !important;max-width:none !important;padding:0 !important;box-shadow:none !important;transform:none !important}
+    .page{width:auto !important;padding:0 !important;box-shadow:none !important;transform:none !important}
     .fld,.out{background:none !important;box-shadow:none !important;padding:0 !important;display:inline !important;min-width:0 !important}
   }
 </style>
 </head>
 <body>
 
-<div class="bar">
-  <span class="title">Договор на бит</span>
-  <span class="counter" id="counter"></span>
-  <span class="zoom">
-    <button type="button" id="z-out" class="zbtn" title="Уменьшить">−</button>
-    <span id="z-val">100%</span>
-    <button type="button" id="z-in" class="zbtn" title="Увеличить">+</button>
-    <button type="button" id="z-fit" class="zbtn wide" title="Вписать по ширине">По ширине</button>
-  </span>
-  <button id="btn-pdf">Скачать PDF</button>
-  <button id="btn-doc">Скачать DOC</button>
-  <p class="tip" id="tip">Кликай прямо по подсвеченным местам в тексте договора и вписывай данные. Красное — ещё не заполнено.</p>
+<div class="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div></div>
+<div class="grain"></div>
+
+<div class="shell">
+
+<!-- ================= экран выбора ================= -->
+<section id="chooser">
+  <h1 class="logo">scame</h1>
+  <p class="tag">make sound <span class="spark">✦</span></p>
+  <p class="lead">Выбери, какую лицензию ты купил, — откроется договор. Заполняешь прямо в тексте, скачиваешь PDF, подписываешь и отправляешь.</p>
+
+  <div class="cards">
+    <button class="card" type="button" data-kind="full">
+      <div class="kicker">Эксклюзив</div>
+      <h2>Полные права</h2>
+      <ul>
+        <li>Исключительное право на бит переходит к тебе</li>
+        <li>Бит снимается с продажи</li>
+        <li>WAV, MP3 и TRACKOUT</li>
+        <li>prod. by Scame — по желанию</li>
+      </ul>
+      <span class="go">Открыть договор →</span>
+    </button>
+    <button class="card" type="button" data-kind="lease">
+      <div class="kicker">Unlimited</div>
+      <h2>Безлимитная аренда</h2>
+      <ul>
+        <li>Используешь бит в любых целях, без лимитов</li>
+        <li>Права на бит остаются у Scame</li>
+        <li>MP3 + WAV или Trackout</li>
+        <li>prod. by Scame — обязательно</li>
+      </ul>
+      <span class="go">Открыть договор →</span>
+    </button>
+  </div>
+
+  <p class="foot">Данные, которые ты вписываешь, никуда не отправляются — они остаются только в твоём браузере. Вопросы: <b>t.me/scameikin</b> · <b>scame_music@mail.ru</b></p>
+</section>
+
+<!-- ================= экран договора ================= -->
+<section id="editor" hidden>
+  <div class="bar">
+    <button class="back" type="button" id="btn-back">← Выбор</button>
+    <span class="mini">scame</span>
+    <span class="kind" id="kind-title"></span>
+    <span class="counter" id="counter"></span>
+    <span class="zoom">
+      <button type="button" id="z-out" class="zbtn" title="Уменьшить">−</button>
+      <span id="z-val">100%</span>
+      <button type="button" id="z-in" class="zbtn" title="Увеличить">+</button>
+      <button type="button" id="z-fit" class="zbtn wide" title="Вписать по ширине">По ширине</button>
+    </span>
+    <button class="btn" id="btn-pdf" type="button">Скачать PDF</button>
+    <button class="btn" id="btn-doc" type="button">Скачать DOC</button>
+  </div>
+
+  <div class="guide">
+    <details id="guide" open>
+      <summary>✦ Как заполнить — 1 минута</summary>
+      <ol id="guide-list"></ol>
+      <label class="trk" id="trk-box" hidden>
+        <input type="checkbox" id="trk">
+        Я купил тариф <b>Unlimited Trackout</b> — стемы переданы
+      </label>
+    </details>
+  </div>
+
+  <div class="wrap">
+    <div class="stage" id="stage">
+      <div class="page" id="page">
+        <div id="doc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 </div>
 
-<div class="wrap">
-<div class="stage" id="stage">
-<div class="page" id="page">
-<div id="doc">
-
+<template id="tpl-full">
 <h1>Договор</h1>
 <h2 class="sub">об отчуждении исключительного права на музыкальное произведение</h2>
 <p class="dalee">(далее — «Договор»)</p>
@@ -383,334 +508,443 @@
 </td>
 </tr>
 </table>
+</template>
 
+<template id="tpl-lease">
+<h1>Лицензионный договор</h1>
+<h2 class="sub">о предоставлении права использования музыкального произведения<br>(простая неисключительная лицензия — «Безлимитная аренда»)</h2>
+<p class="dalee">(далее — «Договор»)</p>
+
+<div class="cityrow">
+  <span>г. Екатеринбург</span>
+  <span><span class="fld" data-f="datefull" data-ph="«чч» месяц гггг г."></span></span>
 </div>
-</div>
-</div>
-</div>
+
+<p>Гражданин Российской Федерации <b>Гуржеев Артем Владиславович</b>, дата рождения 14.01.1998, паспорт серия 6517 № 564243, выдан Отделом УФМС России по Свердловской области 16.02.2018 г., код подразделения 660-005, зарегистрированный по адресу: Ханты-Мансийский автономный округ — Югра, Советский р-н, г. Советский, ул. Гагарина, д. 2/3, кв. 67, творческий псевдоним «Scame», именуемый в дальнейшем «<b>Лицензиар</b>», с одной стороны,</p>
+
+<p>и гражданин Российской Федерации <span class="fld" data-f="fio" data-ph="Фамилия Имя Отчество"></span>, дата рождения <span class="fld" data-f="bday" data-ph="дд.мм.гггг"></span>, паспорт серия <span class="fld" data-f="pser" data-ph="0000"></span> № <span class="fld" data-f="pnum" data-ph="000000"></span>, выдан <span class="fld" data-f="pby" data-ph="кем выдан"></span> <span class="fld" data-f="pdate" data-ph="дд.мм.гггг"></span>, зарегистрированный по адресу: <span class="fld" data-f="addr" data-ph="адрес регистрации"></span>, именуемый в дальнейшем «<b>Лицензиат</b>», с другой стороны,</p>
+
+<p>в некоторых случаях совместно именуемые «Стороны», а по отдельности — «Сторона», заключили настоящий Договор о нижеследующем:</p>
+
+<h3>1. Предмет договора</h3>
+
+<p><b>1.1.</b> Лицензиар за вознаграждение, предусмотренное настоящим Договором, предоставляет Лицензиату право использования созданного им музыкального произведения без текста под рабочим названием «<span class="fld" data-f="beat" data-ph="название бита"></span>» (далее — «Музыкальное произведение») на условиях <b>простой (неисключительной) лицензии</b> в пределах и способами, предусмотренными настоящим Договором. <b>Исключительное право на Музыкальное произведение Лицензиату не передаётся и в полном объёме сохраняется за Лицензиаром.</b></p>
+
+<p><b>1.2.</b> В целях однозначной идентификации Музыкального произведения Стороны согласовали следующие его характеристики:</p>
+
+<table class="id">
+  <tr><th>Параметр</th><th>Значение</th></tr>
+  <tr><td>Рабочее название</td><td><span class="fld" data-f="beat" data-ph="название бита"></span></td></tr>
+  <tr><td>Длительность</td><td><span class="fld" data-f="len" data-ph="мм:сс"></span></td></tr>
+  <tr><td>Тональность</td><td><span class="fld" data-f="key" data-ph="тональность"></span></td></tr>
+  <tr><td>Темп (BPM)</td><td><span class="fld" data-f="bpm" data-ph="000"></span></td></tr>
+</table>
+
+<p>Стороны подтверждают, что до подписания настоящего Договора ознакомились с Музыкальным произведением и не имеют разногласий относительно его идентификации. Каждая из Сторон сохраняет у себя экземпляр файла Музыкального произведения.</p>
+
+<p><b>1.3. Способы использования.</b> В соответствии со ст. 1235, 1270, 1286 Гражданского кодекса РФ Лицензиат вправе использовать Музыкальное произведение в любых целях, в том числе коммерческих, следующими способами:</p>
+<ul>
+  <li><b>1.3.1.</b> переработка Музыкального произведения, в том числе создание на его основе музыкальных произведений с текстом (песен, треков) путём добавления вокала, текста и иных элементов, а также аранжировка, сведение, мастеринг, изменение темпа и тональности, создание ремиксов и иных версий (далее — «Треки Лицензиата»);</li>
+  <li><b>1.3.2.</b> воспроизведение Музыкального произведения в составе Треков Лицензиата, в том числе запись на любые материальные носители;</li>
+  <li><b>1.3.3.</b> распространение Треков Лицензиата путём продажи или иного отчуждения их экземпляров, в том числе на физических носителях;</li>
+  <li><b>1.3.4.</b> доведение Треков Лицензиата до всеобщего сведения, в том числе размещение на стриминговых сервисах, видеохостингах, в социальных сетях и в магазинах цифровой музыки, включая распространение через агрегаторов и дистрибьюторов;</li>
+  <li><b>1.3.5.</b> публичное исполнение Треков Лицензиата, в том числе на концертах, выступлениях и иных мероприятиях;</li>
+  <li><b>1.3.6.</b> сообщение Треков Лицензиата в эфир и по кабелю, в том числе на радио и телевидении;</li>
+  <li><b>1.3.7.</b> включение Треков Лицензиата в состав аудиовизуальных произведений и иных сложных объектов (музыкальных видеоклипов, видеороликов, фильмов, рекламных материалов, видеоигр и т.п.) и их последующее использование указанными выше способами;</li>
+  <li><b>1.3.8.</b> монетизация Треков Лицензиата в любой форме, в том числе получение доходов от продаж, стримингов, просмотров, публичного исполнения и рекламы.</li>
+</ul>
+
+<p><b>1.4. Безлимитность.</b> Право использования предоставляется <b>без ограничения</b> количества экземпляров, продаж, прослушиваний, просмотров, скачиваний, выступлений, эфиров и релизов, а также без ограничения размера получаемого Лицензиатом дохода.</p>
+
+<p><b>1.5. Территория и срок.</b> Право использования предоставляется <b>на территории всего мира</b> и <b>на весь срок действия исключительного права</b> на Музыкальное произведение.</p>
+
+<p><b>1.6. Неисключительный характер лицензии.</b> Лицензиар сохраняет за собой право самостоятельно использовать Музыкальное произведение, предоставлять право его использования третьим лицам на любых условиях, а также отчуждать исключительное право на Музыкальное произведение третьим лицам (в том числе на условиях полного отчуждения — «эксклюзива»). Лицензиату известно, что аналогичные права использования Музыкального произведения предоставлены и будут предоставляться иным лицам, и он не имеет и не будет иметь в связи с этим каких-либо претензий к Лицензиару и иным правообладателям и лицензиатам.</p>
+
+<p><b>1.7. Сохранение лицензии.</b> В соответствии с п. 7 ст. 1235 ГК РФ переход исключительного права на Музыкальное произведение к третьему лицу, в том числе на условиях полного отчуждения, <b>не прекращает действие настоящего Договора</b>. Лицензиат вправе продолжать использование Музыкального произведения и Треков Лицензиата, созданных как до, так и после такого перехода, в объёме, предусмотренном настоящим Договором.</p>
+
+<p><b>1.8. Права на Треки Лицензиата.</b> Права на текст, вокальные партии и иные элементы, самостоятельно созданные Лицензиатом при создании Треков Лицензиата, принадлежат Лицензиату либо соответствующим авторам. Исключительное право на Музыкальное произведение в составе Треков Лицензиата сохраняется за Лицензиаром; Лицензиат использует его в пределах настоящего Договора.</p>
+
+<p><b>1.9. Ограничения.</b> Лицензиат <b>не вправе</b>:</p>
+<ul>
+  <li><b>1.9.1.</b> предоставлять третьим лицам сублицензии и иным образом передавать право использования Музыкального произведения, за исключением передачи агрегаторам, дистрибьюторам, лейблам, площадкам и иным лицам прав в объёме, необходимом для распространения и монетизации Треков Лицензиата способами, указанными в п. 1.3 Договора;</li>
+  <li><b>1.9.2.</b> продавать, сдавать в аренду, передавать или распространять Музыкальное произведение как самостоятельное произведение (инструментал, бит) без собственного вокала или текста Лицензиата, в том числе предлагать его иным исполнителям;</li>
+  <li><b>1.9.3.</b> регистрировать Музыкальное произведение либо Треки Лицензиата в системах автоматической идентификации контента (YouTube Content ID и аналогичных) и заявлять на их основании претензии (клеймы, страйки) к Лицензиару, иным лицензиатам и правообладателям;</li>
+  <li><b>1.9.4.</b> выдавать себя за автора Музыкального произведения, заявлять о своих правах на Музыкальное произведение (в том числе при регистрации в организациях по коллективному управлению правами), а также оспаривать права Лицензиара.</li>
+</ul>
+
+<p><b>1.10. Конфиденциальность.</b> Информация, ставшая известной Сторонам в связи с настоящим Договором, включая персональные данные Сторон и условия сделки, признаётся конфиденциальной и не подлежит разглашению в течение 3 (Трёх) лет с даты заключения Договора, за исключением случаев, предусмотренных законодательством РФ, и случаев раскрытия, необходимого для защиты прав Стороны. Лицензиар вправе указывать сам факт сотрудничества с Лицензиатом и использовать Треки Лицензиата в своём портфолио.</p>
+
+<h3>2. Права и обязанности сторон</h3>
+
+<p><b>2.1. Лицензиат обязуется:</b></p>
+<ul>
+  <li><b>2.1.1.</b> использовать Музыкальное произведение только в пределах и способами, предусмотренными настоящим Договором;</li>
+  <li><b>2.1.2.</b> <b>обязательно указывать авторство Лицензиара</b> в форме «<b>prod. by Scame</b>» при каждой публикации Треков Лицензиата — в названии трека или релиза, либо в его описании, либо в метаданных (credits) — на всех площадках, где это технически возможно;</li>
+  <li><b>2.1.3.</b> использовать Музыкальное произведение способами, не порочащими честь, достоинство и деловую репутацию Лицензиара.</li>
+</ul>
+
+<p><b>2.2. Лицензиар обязуется:</b></p>
+<ul>
+  <li><b>2.2.1.</b> не препятствовать использованию Музыкального произведения Лицензиатом в пределах настоящего Договора;</li>
+  <li><b>2.2.2.</b> не заявлять от своего имени претензий (клеймов, страйков) в отношении Треков Лицензиата, опубликованных в соответствии с настоящим Договором;</li>
+  <li><b>2.2.3.</b> в случае поступления такой претензии со стороны своих агрегаторов или дистрибьюторов — по письменному уведомлению Лицензиата в течение <b>10 (Десяти) рабочих дней</b> направить соответствующему лицу обращение об отзыве претензии. Лицензиар не отвечает за сроки и результат рассмотрения такого обращения третьим лицом.</li>
+</ul>
+
+<h3>3. Финансовые условия</h3>
+
+<p><b>3.1.</b> Вознаграждение Лицензиара за предоставление права использования Музыкального произведения составляет <b><span class="fld" data-f="sum" data-ph="сумма"></span> (<span class="out" data-o="sumw" data-ph="сумма прописью"></span>) <span class="out" data-o="rub" data-ph="рублей"></span></b>.</p>
+
+<p><b>3.2. Оплата произведена.</b> Вознаграждение, указанное в п. 3.1, уплачено Лицензиатом Лицензиару <b>в полном объёме до подписания настоящего Договора</b>. Стороны подтверждают, что обязательство по оплате исполнено надлежащим образом и взаимных финансовых претензий, связанных с оплатой, Стороны друг к другу не имеют.</p>
+
+<p><b>3.3. Налоги.</b> Сумма, указанная в п. 3.1, является доходом Лицензиара и выплачена Лицензиатом в полном размере, без удержаний. Лицензиат является физическим лицом и налоговым агентом по отношению к Лицензиару не выступает. Лицензиар самостоятельно исполняет обязанности по уплате налога с полученного дохода.</p>
+
+<p><b>3.4. Момент предоставления права.</b> Право использования Музыкального произведения предоставляется Лицензиату с даты подписания настоящего Договора последней из Сторон.</p>
+
+<p><b>3.5.</b> Вознаграждение, указанное в п. 3.1, является фиксированным и единовременным и включает оплату за все способы, объём и срок использования, предусмотренные настоящим Договором. Роялти, отчисления от доходов Лицензиата и иные платежи не предусмотрены; отчёты об использовании Лицензиат не представляет.</p>
+
+<h3>4. Передача файлов музыкального произведения</h3>
+
+<p><b>4.1.</b> На дату подписания настоящего Договора Лицензиар передал, а Лицензиат получил следующие материалы, <b>все — без звуковых меток (тегов) Лицензиара</b>:</p>
+<ul>
+  <li><b>4.1.1.</b> сведённый мастер в формате <b>WAV</b>;</li>
+  <li><b>4.1.2.</b> сведённый мастер в формате <b>MP3</b><span id="punct-trk">.</span></li>
+  <li id="li-trk" hidden><b>4.1.3.</b> <b>TRACKOUT</b> — раздельные дорожки (стемы) Музыкального произведения в формате WAV.</li>
+</ul>
+
+<p><b>4.2. Подтверждение приёмки.</b> Лицензиат подтверждает, что до заключения настоящего Договора в полном объёме ознакомился с Музыкальным произведением, получил все материалы, указанные в п. 4.1, и что их состав, объём, качество и технические характеристики ему известны и его полностью устраивают. Каких-либо претензий по составу, объёму, качеству и срокам передачи материалов Лицензиат к Лицензиару не имеет. Подписание настоящего Договора заменяет собой акт приёма-передачи.</p>
+
+<h3>5. Срок действия и расторжение</h3>
+
+<p><b>5.1.</b> Настоящий Договор вступает в силу с даты его подписания Сторонами и действует в течение срока, указанного в п. 1.5 Договора.</p>
+
+<p><b>5.2.</b> Договор может быть расторгнут по соглашению Сторон.</p>
+
+<p><b>5.3.</b> Лицензиар вправе в одностороннем внесудебном порядке отказаться от исполнения Договора, направив Лицензиату уведомление в порядке п. 9.4, в случае:</p>
+<ul>
+  <li><b>5.3.1.</b> нарушения Лицензиатом любого из ограничений, предусмотренных п. 1.9 Договора;</li>
+  <li><b>5.3.2.</b> неуказания авторства Лицензиара в нарушение п. 2.1.2 Договора, если нарушение не устранено в течение 30 (Тридцати) календарных дней с даты получения Лицензиатом соответствующего уведомления.</li>
+</ul>
+<p>В случае такого отказа право использования Музыкального произведения прекращается, Лицензиат обязан прекратить новое использование Музыкального произведения и Треков Лицензиата, а уплаченное вознаграждение возврату не подлежит.</p>
+
+<h3>6. Заверения и гарантии</h3>
+
+<p><b>6.1.</b> Лицензиар заверяет и гарантирует, что Музыкальное произведение создано его личным творческим трудом, он является его единственным автором и обладателем исключительного права на него и вправе предоставлять право его использования в объёме, предусмотренном Договором.</p>
+
+<p><b>6.2. Сэмплы и сторонние материалы.</b> Лицензиар гарантирует, что при создании Музыкального произведения использованы исключительно собственные записи Лицензиара и (или) сэмплы, лупы, пресеты и иные материалы, правомерно приобретённые либо распространяемые на условиях, допускающих коммерческое использование результата, и не использованы фрагменты фонограмм и произведений третьих лиц, требующие получения отдельного разрешения (клиренса).</p>
+
+<p><b>6.3. Программные средства и технологии.</b> Стороны исходят из того, что при создании Музыкального произведения Лицензиаром могли использоваться любые программно-аппаратные средства, включая цифровые звуковые рабочие станции, виртуальные инструменты, библиотеки звуков и инструменты, основанные на технологиях искусственного интеллекта, применяемые на условиях, допускающих коммерческое использование результатов их работы. При этом творческий вклад в создание Музыкального произведения — выбор и отбор материала, его обработка, аранжировка, сведение и итоговое оформление — осуществлён Лицензиаром лично, вследствие чего Музыкальное произведение является объектом авторского права Лицензиара.</p>
+
+<p><b>6.4.</b> Лицензиат подтверждает, что до заключения Договора прослушал Музыкальное произведение в полном объёме, принимает его в том виде, в каком оно существует на дату подписания Договора, и самостоятельно, на свой риск оценил пригодность Музыкального произведения для своих целей.</p>
+
+<p><b>6.5.</b> Каждая из Сторон гарантирует, что заключение настоящего Договора не противоречит иным принятым ею на себя обязательствам, что она действует добровольно, не находится под влиянием заблуждения, обмана, насилия, угрозы либо стечения тяжёлых обстоятельств, и что условия Договора не являются для неё кабальными.</p>
+
+<h3>7. Ответственность сторон</h3>
+
+<p><b>7.1.</b> За неисполнение или ненадлежащее исполнение обязательств Стороны несут ответственность в соответствии с настоящим Договором и законодательством Российской Федерации.</p>
+
+<p><b>7.2. Претензии третьих лиц.</b> При предъявлении к Лицензиату претензий третьих лиц, связанных с авторством или правами на Музыкальное произведение (за исключением претензий в отношении текста, вокала и иных элементов, созданных Лицензиатом), Лицензиар обязуется урегулировать такие претензии самостоятельно, а при невозможности — возместить Лицензиату документально подтверждённые убытки в пределах, установленных п. 7.3 Договора. При этом Лицензиат обязан не позднее 5 (Пяти) рабочих дней уведомить Лицензиара о претензии и не вправе признавать её, заключать мировое соглашение или производить выплаты третьему лицу без предварительного письменного согласия Лицензиара; нарушение этих обязанностей освобождает Лицензиара от ответственности в соответствующей части.</p>
+
+<p><b>7.3. Ограничение ответственности.</b> Совокупный размер ответственности Лицензиара по настоящему Договору и в связи с ним (включая убытки, неустойки и любые иные выплаты) ограничен суммой, указанной в п. 3.1 Договора. Упущенная выгода возмещению не подлежит. Настоящее ограничение не применяется к случаям умышленного нарушения обязательства.</p>
+
+<p><b>7.4.</b> Использование Музыкального произведения Лицензиатом способом, не предусмотренным настоящим Договором, либо после прекращения Договора является нарушением исключительного права Лицензиара (п. 3 ст. 1237 ГК РФ) и влечёт ответственность, установленную законодательством Российской Федерации.</p>
+
+<h3>8. Обстоятельства непреодолимой силы</h3>
+
+<p><b>8.1.</b> Стороны освобождаются от ответственности за частичное или полное неисполнение обязательств по настоящему Договору, если оно явилось следствием обстоятельств непреодолимой силы: стихийных бедствий, военных действий, массовых беспорядков, издания актов органов власти, делающих исполнение невозможным, и иных чрезвычайных и непредотвратимых при данных условиях обстоятельств. Сторона, для которой создалась невозможность исполнения, обязана письменно уведомить другую Сторону в течение 5 (Пяти) рабочих дней. Наступление таких обстоятельств не является основанием для возврата уплаченного вознаграждения.</p>
+
+<h3>9. Заключительные положения</h3>
+
+<p><b>9.1.</b> Стороны подтверждают, что вправе заключить настоящий Договор на указанных выше условиях.</p>
+
+<p><b>9.2. Форма Договора и порядок подписания.</b> Договор заключается в письменной форме. Стороны признают, что обмен подписанными экземплярами Договора в виде электронных образов (сканированных копий или фотографий) по адресам электронной почты, указанным в разделе 10, а равно подписание Договора с использованием сервисов электронного документооборота или простой электронной подписи, означает заключение Договора в письменной форме и имеет юридическую силу оригинала. Договор составлен в двух экземплярах, имеющих равную юридическую силу, по одному для каждой из Сторон.</p>
+
+<p><b>9.3.</b> Любые изменения и дополнения к Договору совершаются в письменной форме и подписываются Сторонами.</p>
+
+<p><b>9.4. Юридически значимые сообщения.</b> Все уведомления направляются по адресам электронной почты и (или) в мессенджеры, указанные в разделе 10 Договора, и считаются полученными в день отправки при отсутствии сведений о недоставке. Стороны обязуются незамедлительно уведомлять друг друга об изменении своих контактных данных.</p>
+
+<p><b>9.5. Персональные данные.</b> Стороны обрабатывают персональные данные друг друга исключительно в целях заключения и исполнения настоящего Договора и исполнения требований законодательства и обязуются не передавать их третьим лицам, кроме случаев, предусмотренных законом либо необходимых для защиты своих прав. Подписывая Договор, каждая из Сторон подтверждает своё согласие на такую обработку.</p>
+
+<p><b>9.6. Разрешение споров.</b> Споры, возникающие из настоящего Договора, разрешаются путём переговоров. Претензионный порядок обязателен; срок ответа на претензию — 15 (Пятнадцать) календарных дней с даты её направления в порядке п. 9.4. При недостижении согласия спор передаётся на рассмотрение суда по месту жительства Лицензиара в соответствии с законодательством Российской Федерации.</p>
+
+<p><b>9.7.</b> Настоящий Договор содержит полный объём договорённостей Сторон в отношении его предмета и отменяет все предшествующие устные и письменные договорённости Сторон по этому предмету. Вопросы, не урегулированные Договором, разрешаются в соответствии с законодательством Российской Федерации.</p>
+
+<h3>10. Адреса, реквизиты и подписи сторон</h3>
+
+<table class="sign">
+<tr>
+<td>
+  <div class="party">ЛИЦЕНЗИАР</div>
+  <b>Гуржеев Артем Владиславович</b><br>
+  Дата рождения: 14.01.1998<br>
+  Паспорт: серия 6517 № 564243<br>
+  Выдан: Отделом УФМС России по Свердловской области, 16.02.2018 г.<br>
+  Код подразделения: 660-005<br>
+  Зарегистрирован: Ханты-Мансийский автономный округ — Югра, Советский р-н, г. Советский, ул. Гагарина, д. 2/3, кв. 67<br>
+  <br>
+  E-mail: scame_music@mail.ru<br>
+  Telegram: t.me/scameikin<br>
+  <br>
+  <b>Реквизиты, по которым произведён расчёт:</b><br>
+  Т-Банк (АО «ТБанк»)<br>
+  Номер карты: 2200 7006 0531 0498<br>
+  Получатель: Гуржеев Артем Владиславович<br>
+  <i>Расчёт произведён в полном объёме до подписания настоящего Договора.</i>
+</td>
+<td>
+  <div class="party">ЛИЦЕНЗИАТ</div>
+  <span class="fld" data-f="fio" data-ph="Фамилия Имя Отчество"></span><br>
+  Дата рождения: <span class="fld" data-f="bday" data-ph="дд.мм.гггг"></span><br>
+  Паспорт: серия <span class="fld" data-f="pser" data-ph="0000"></span> № <span class="fld" data-f="pnum" data-ph="000000"></span><br>
+  Выдан: <span class="fld" data-f="pby" data-ph="кем выдан"></span>, <span class="fld" data-f="pdate" data-ph="дд.мм.гггг"></span><br>
+  Код подразделения: <span class="fld" data-f="pcode" data-ph="000-000"></span><br>
+  Зарегистрирован: <span class="fld" data-f="addr" data-ph="адрес регистрации"></span><br>
+  <br>
+  E-mail: <span class="fld" data-f="mail" data-ph="e-mail"></span><br>
+  Telegram / телефон: <span class="fld" data-f="tg" data-ph="телефон или Telegram"></span>
+</td>
+</tr>
+<tr>
+<td>
+  <div class="sigline">
+    _______________________ / Гуржеев А. В. /<br><br>
+    Дата: <span class="out" data-o="datefull" data-ph="«чч» месяц гггг г."></span>
+  </div>
+</td>
+<td>
+  <div class="sigline">
+    _______________________ / <span class="out" data-o="fioshort" data-ph="Фамилия И. О."></span> /<br><br>
+    Дата: <span class="out" data-o="datefull" data-ph="«чч» месяц гггг г."></span>
+  </div>
+</td>
+</tr>
+</table>
+
+</template>
 
 <script>
 (function(){
   "use strict";
 
   /* ================= сумма прописью ================= */
-  var ONES_M = ['','один','два','три','четыре','пять','шесть','семь','восемь','девять'];
-  var ONES_F = ['','одна','две','три','четыре','пять','шесть','семь','восемь','девять'];
-  var TEENS  = ['десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'];
-  var TENS   = ['','','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'];
-  var HUNDS  = ['','сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот'];
-
-  function plural(n, one, few, many){
-    var n10 = n % 10, n100 = n % 100;
-    if (n100 >= 11 && n100 <= 14) return many;
-    if (n10 === 1) return one;
-    if (n10 >= 2 && n10 <= 4) return few;
-    return many;
-  }
-  function triad(n, fem){
-    var out = [], h = Math.floor(n/100), t = Math.floor((n%100)/10), u = n%10;
-    if (h) out.push(HUNDS[h]);
-    if (t === 1) out.push(TEENS[u]);
-    else { if (t) out.push(TENS[t]); if (u) out.push((fem?ONES_F:ONES_M)[u]); }
-    return out.join(' ');
-  }
+  var ONES_M=['','один','два','три','четыре','пять','шесть','семь','восемь','девять'];
+  var ONES_F=['','одна','две','три','четыре','пять','шесть','семь','восемь','девять'];
+  var TEENS=['десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'];
+  var TENS=['','','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'];
+  var HUNDS=['','сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот'];
+  function plural(n,one,few,many){var a=n%10,b=n%100;if(b>=11&&b<=14)return many;if(a===1)return one;if(a>=2&&a<=4)return few;return many;}
+  function triad(n,fem){var o=[],h=Math.floor(n/100),t=Math.floor((n%100)/10),u=n%10;if(h)o.push(HUNDS[h]);if(t===1)o.push(TEENS[u]);else{if(t)o.push(TENS[t]);if(u)o.push((fem?ONES_F:ONES_M)[u]);}return o.join(' ');}
   function numberToWords(num){
-    num = Math.floor(Math.abs(num));
-    if (num === 0) return 'ноль';
-    var groups = [
-      {div:1000000000, fem:false, f:['миллиард','миллиарда','миллиардов']},
-      {div:1000000,    fem:false, f:['миллион','миллиона','миллионов']},
-      {div:1000,       fem:true,  f:['тысяча','тысячи','тысяч']}
-    ];
-    var parts = [], rest = num;
-    for (var i=0;i<groups.length;i++){
-      var g = groups[i], cnt = Math.floor(rest/g.div);
-      if (cnt > 0){
-        parts.push(triad(cnt, g.fem));
-        parts.push(plural(cnt, g.f[0], g.f[1], g.f[2]));
-        rest = rest % g.div;
-      }
+    num=Math.floor(Math.abs(num)); if(num===0) return 'ноль';
+    var g=[{d:1e9,f:false,w:['миллиард','миллиарда','миллиардов']},{d:1e6,f:false,w:['миллион','миллиона','миллионов']},{d:1e3,f:true,w:['тысяча','тысячи','тысяч']}];
+    var p=[],r=num;
+    for(var i=0;i<g.length;i++){var c=Math.floor(r/g[i].d);if(c>0){p.push(triad(c,g[i].f));p.push(plural(c,g[i].w[0],g[i].w[1],g[i].w[2]));r=r%g[i].d;}}
+    if(r>0)p.push(triad(r,false));
+    return p.join(' ').replace(/\s+/g,' ').trim();
+  }
+  function rubleWord(n){return plural(Math.floor(Math.abs(n)),'рубль','рубля','рублей');}
+  function groupDigits(n){return String(Math.floor(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+
+  var MONTHS=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  function pad2(n){return(n<10?'0':'')+n;}
+  function todayLong(){var d=new Date();return '«'+pad2(d.getDate())+'» '+MONTHS[d.getMonth()]+' '+d.getFullYear()+' г.';}
+  function shortFio(f){var p=String(f||'').trim().split(/\s+/).filter(Boolean);if(!p.length)return '';var s=p[0];if(p[1])s+=' '+p[1].charAt(0).toUpperCase()+'.';if(p[2])s+=' '+p[2].charAt(0).toUpperCase()+'.';return s;}
+
+  var $=function(id){return document.getElementById(id);};
+  var doc=$('doc'), page=$('page'), stage=$('stage');
+  var TOUCH=window.matchMedia&&window.matchMedia('(pointer: coarse)').matches;
+  if(TOUCH) document.body.classList.add('touch');
+
+  var KINDS={
+    full:{
+      title:'Полные права',
+      file:'Договор (полные права)',
+      steps:[
+        'Нажми на <span class="red">красное</span> место в тексте и впиши данные — подсказка исчезнет сама. Поля, которые встречаются дважды, заполняются одновременно.',
+        '<b>Свои данные</b>: ФИО, дата рождения, паспорт, адрес регистрации — как в паспорте. Контакты — в разделе 10 в конце.',
+        '<b>Бит</b>: название, длительность, тональность и BPM — как в описании бита.',
+        '<b>Сумма</b> — сколько ты заплатил. Прописью посчитается сама.',
+        'Дата и «Фамилия И. О.» в подписи подставляются автоматически.',
+        'Когда вверху будет «Заполнено полностью» — жми <b>Скачать PDF</b>, подпиши и отправь в Telegram <b>t.me/scameikin</b> или на <b>scame_music@mail.ru</b>.'
+      ]
+    },
+    lease:{
+      title:'Безлимитная аренда',
+      file:'Договор (безлимитная аренда)',
+      steps:[
+        'Нажми на <span class="red">красное</span> место в тексте и впиши данные — подсказка исчезнет сама. Поля, которые встречаются дважды, заполняются одновременно.',
+        '<b>Свои данные</b>: ФИО, дата рождения, паспорт, адрес регистрации — как в паспорте. Контакты — в разделе 10 в конце.',
+        '<b>Бит</b>: название, длительность, тональность и BPM — как в описании бита.',
+        '<b>Сумма</b> — сколько ты заплатил. Прописью посчитается сама.',
+        'Если купил <b>Unlimited Trackout</b> — отметь галочку ниже, в договоре появятся стемы.',
+        'Важно: в каждом релизе указывай <b>prod. by Scame</b> — это условие аренды (п. 2.1.2).',
+        'Когда вверху будет «Заполнено полностью» — жми <b>Скачать PDF</b>, подпиши и отправь в Telegram <b>t.me/scameikin</b> или на <b>scame_music@mail.ru</b>.'
+      ]
     }
-    if (rest > 0) parts.push(triad(rest,false));
-    return parts.join(' ').replace(/\s+/g,' ').trim();
-  }
-  function rubleWord(n){ return plural(Math.floor(Math.abs(n)),'рубль','рубля','рублей'); }
-  function groupDigits(n){ return String(Math.floor(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
+  };
 
-  /* ================= дата ================= */
-  var MONTHS = ['января','февраля','марта','апреля','мая','июня',
-                'июля','августа','сентября','октября','ноября','декабря'];
-  function pad2(n){ return (n<10?'0':'')+n; }
-  function todayLong(){
-    var d = new Date();
-    return '«'+pad2(d.getDate())+'» '+MONTHS[d.getMonth()]+' '+d.getFullYear()+' г.';
-  }
-
-  function shortFio(fio){
-    var p = String(fio||'').trim().split(/\s+/).filter(Boolean);
-    if (!p.length) return '';
-    var s = p[0];
-    if (p[1]) s += ' ' + p[1].charAt(0).toUpperCase() + '.';
-    if (p[2]) s += ' ' + p[2].charAt(0).toUpperCase() + '.';
-    return s;
-  }
+  var current=null, flds=[], outs=[];
 
   /* ================= поля ================= */
-  var flds = Array.prototype.slice.call(document.querySelectorAll('.fld'));
-  var outs = Array.prototype.slice.call(document.querySelectorAll('.out'));
-
-  /* на тач-экране поля делаем крупнее, но ввод везде прямо в тексте */
-  var TOUCH = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-  if (TOUCH) document.body.classList.add('touch');
-
-  flds.forEach(function(el){
-    el.setAttribute('spellcheck','false');
-    el.setAttribute('contenteditable','true');
-    if (/^(sum|bpm|pser|pnum)$/.test(el.getAttribute('data-f'))) el.setAttribute('inputmode','numeric');
-  });
-
-  function clean(el){
-    var t = el.textContent.replace(/ /g,' ');
-    if (!t.trim()) { if (el.innerHTML !== '') el.innerHTML = ''; return ''; }
-    return t.trim();
-  }
-  function getVal(key){
-    for (var i=0;i<flds.length;i++){
-      if (flds[i].getAttribute('data-f') === key){
-        var t = flds[i].textContent.replace(/ /g,' ').trim();
-        if (t) return t;
-      }
-    }
-    return '';
-  }
-  function setOut(key, v){
-    outs.forEach(function(el){
-      if (el.getAttribute('data-o') !== key) return;
-      if (v) el.textContent = v; else el.innerHTML = '';
-    });
-  }
-
+  function getVal(k){for(var i=0;i<flds.length;i++){if(flds[i].getAttribute('data-f')===k){var t=flds[i].textContent.replace(/ /g,' ').trim();if(t)return t;}}return '';}
+  function setOut(k,v){outs.forEach(function(el){if(el.getAttribute('data-o')!==k)return;if(v)el.textContent=v;else el.innerHTML='';});}
   function derive(){
-    setOut('fioshort', shortFio(getVal('fio')));
-    setOut('datefull', getVal('datefull'));
-    var raw = getVal('sum').replace(/[^\d]/g,'');
-    var n = raw ? parseInt(raw,10) : 0;
-    setOut('sumw', n ? numberToWords(n) : '');
-    setOut('rub',  n ? rubleWord(n)     : '');
+    setOut('fioshort',shortFio(getVal('fio')));
+    setOut('datefull',getVal('datefull'));
+    var raw=getVal('sum').replace(/[^\d]/g,''),n=raw?parseInt(raw,10):0;
+    setOut('sumw',n?numberToWords(n):'');
+    setOut('rub',n?rubleWord(n):'');
     updateCounter();
   }
-
   function updateCounter(){
-    var empty = 0;
-    var seen = {};
-    flds.forEach(function(el){
-      var k = el.getAttribute('data-f');
-      if (seen[k]) return;
-      seen[k] = 1;
-      if (!el.textContent.trim()) empty++;
-    });
-    var c = document.getElementById('counter');
-    if (empty === 0){ c.className = 'counter done'; c.innerHTML = 'Заполнено <b>полностью</b>'; }
-    else { c.className = 'counter'; c.innerHTML = 'Осталось заполнить: <b>'+empty+'</b>'; }
+    var empty=0,seen={};
+    flds.forEach(function(el){var k=el.getAttribute('data-f');if(seen[k])return;seen[k]=1;if(!el.textContent.trim())empty++;});
+    var c=$('counter');
+    if(empty===0){c.className='counter done';c.innerHTML='Заполнено <b>полностью</b>';}
+    else{c.className='counter';c.innerHTML='Осталось заполнить: <b>'+empty+'</b>';}
   }
 
-  document.addEventListener('input', function(e){
-    var el = e.target.closest ? e.target.closest('.fld') : null;
-    if (!el) return;
-    var key = el.getAttribute('data-f');
-    var v = clean(el);
-    flds.forEach(function(o){
-      if (o !== el && o.getAttribute('data-f') === key){
-        if (v) o.textContent = v; else o.innerHTML = '';
-      }
-    });
+  document.addEventListener('input',function(e){
+    var el=e.target.closest?e.target.closest('.fld'):null; if(!el)return;
+    var k=el.getAttribute('data-f'),t=el.textContent.replace(/ /g,' '),v=t.trim();
+    if(!v&&el.innerHTML!=='')el.innerHTML='';
+    flds.forEach(function(o){if(o!==el&&o.getAttribute('data-f')===k){if(v)o.textContent=v;else o.innerHTML='';}});
     derive();
   });
-
-  /* Enter не переносит строку, вставка — только текстом */
-  document.addEventListener('keydown', function(e){
-    var el = e.target.closest ? e.target.closest('.fld') : null;
-    if (el && e.key === 'Enter'){ e.preventDefault(); el.blur(); }
+  document.addEventListener('keydown',function(e){var el=e.target.closest?e.target.closest('.fld'):null;if(el&&e.key==='Enter'){e.preventDefault();el.blur();}});
+  document.addEventListener('paste',function(e){
+    var el=e.target.closest?e.target.closest('.fld'):null;if(!el)return;e.preventDefault();
+    var t=(e.clipboardData||window.clipboardData).getData('text')||'';
+    document.execCommand('insertText',false,t.replace(/\s+/g,' ').trim());
   });
-  document.addEventListener('paste', function(e){
-    var el = e.target.closest ? e.target.closest('.fld') : null;
-    if (!el) return;
-    e.preventDefault();
-    var t = (e.clipboardData || window.clipboardData).getData('text') || '';
-    document.execCommand('insertText', false, t.replace(/\s+/g,' ').trim());
-  });
-
-  /* сумма — красиво разбиваем по разрядам при уходе из поля */
-  document.addEventListener('focusout', function(e){
-    var el = e.target.closest ? e.target.closest('.fld') : null;
-    if (!el || el.getAttribute('data-f') !== 'sum') return;
-    var raw = el.textContent.replace(/[^\d]/g,'');
-    var v = raw ? groupDigits(parseInt(raw,10)) : '';
-    flds.forEach(function(o){
-      if (o.getAttribute('data-f') === 'sum'){ if (v) o.textContent = v; else o.innerHTML = ''; }
-    });
+  document.addEventListener('focusout',function(e){
+    var el=e.target.closest?e.target.closest('.fld'):null;if(!el||el.getAttribute('data-f')!=='sum')return;
+    var raw=el.textContent.replace(/[^\d]/g,''),v=raw?groupDigits(parseInt(raw,10)):'';
+    flds.forEach(function(o){if(o.getAttribute('data-f')==='sum'){if(v)o.textContent=v;else o.innerHTML='';}});
     derive();
   });
-
-  /* дата по умолчанию — сегодня */
-  flds.forEach(function(el){
-    if (el.getAttribute('data-f') === 'datefull') el.textContent = todayLong();
+  document.addEventListener('focusin',function(e){
+    var el=e.target.closest?e.target.closest('.fld'):null;if(!el||!TOUCH)return;
+    setTimeout(function(){try{el.scrollIntoView({block:'center',behavior:'smooth'});}catch(x){el.scrollIntoView();}},300);
   });
-  derive();
 
-  /* ================= масштаб страницы ================= */
-  var stage = document.getElementById('stage');
-  var page  = document.getElementById('page');
-  var zoom  = 1;
-
+  /* ================= масштаб ================= */
+  var zoom=1;
   function applyZoom(){
-    var w = page.offsetWidth, h = page.offsetHeight;
-    page.style.transform = 'scale(' + zoom + ')';
-    stage.style.width  = Math.round(w * zoom) + 'px';
-    stage.style.height = Math.round(h * zoom) + 'px';
-    document.getElementById('z-val').textContent = Math.round(zoom * 100) + '%';
+    var w=page.offsetWidth,h=page.offsetHeight;
+    page.style.transform='scale('+zoom+')';
+    stage.style.width=Math.round(w*zoom)+'px';stage.style.height=Math.round(h*zoom)+'px';
+    $('z-val').textContent=Math.round(zoom*100)+'%';
   }
-  function setZoom(z){
-    zoom = Math.min(2, Math.max(0.25, z));
-    applyZoom();
-  }
-  function fitWidth(){
-    var wrap = document.querySelector('.wrap');
-    var avail = wrap.clientWidth - 16;
-    setZoom(avail / page.offsetWidth);
-  }
-  document.getElementById('z-in').addEventListener('click', function(){ setZoom(zoom + 0.1); });
-  document.getElementById('z-out').addEventListener('click', function(){ setZoom(zoom - 0.1); });
-  document.getElementById('z-fit').addEventListener('click', fitWidth);
+  function setZoom(z){zoom=Math.min(2,Math.max(.25,z));applyZoom();}
+  function fitWidth(){var wrap=document.querySelector('.wrap');setZoom((wrap.clientWidth-16)/page.offsetWidth);}
+  $('z-in').addEventListener('click',function(){setZoom(zoom+.1);});
+  $('z-out').addEventListener('click',function(){setZoom(zoom-.1);});
+  $('z-fit').addEventListener('click',fitWidth);
+  if(window.ResizeObserver) new ResizeObserver(function(){if(current&&!document.body.classList.contains('exporting'))applyZoom();}).observe(page);
+  window.addEventListener('orientationchange',function(){setTimeout(fitWidth,250);});
 
-  /* высота страницы меняется по мере заполнения — пересчитываем */
-  if (window.ResizeObserver){
-    new ResizeObserver(function(){ if (!document.body.classList.contains('exporting')) applyZoom(); })
-      .observe(page);
+  /* ================= TRACKOUT для аренды ================= */
+  function applyTrackout(){
+    var on=$('trk').checked,li=doc.querySelector('#li-trk'),pu=doc.querySelector('#punct-trk');
+    if(li)li.hidden=!on; if(pu)pu.textContent=on?';':'.';
   }
-  window.addEventListener('orientationchange', function(){ setTimeout(fitWidth, 250); });
+  $('trk').addEventListener('change',applyTrackout);
 
-  /* на узких экранах сразу вписываем по ширине */
-  if (window.innerWidth < 900) fitWidth(); else applyZoom();
-
-  /* ================= поведение при фокусе ================= */
-  /* на телефоне клавиатура закрывает низ экрана — подтягиваем поле к центру */
-  document.addEventListener('focusin', function(e){
-    var el = e.target.closest ? e.target.closest('.fld') : null;
-    if (!el || !TOUCH) return;
-    setTimeout(function(){
-      try { el.scrollIntoView({block:'center', behavior:'smooth'}); } catch(err){ el.scrollIntoView(); }
-    }, 300);
+  /* ================= переключение экранов ================= */
+  function mount(kind){
+    var k=KINDS[kind]; if(!k)return showChooser();
+    current=kind;
+    doc.innerHTML=$('tpl-'+kind).innerHTML;
+    flds=Array.prototype.slice.call(doc.querySelectorAll('.fld'));
+    outs=Array.prototype.slice.call(doc.querySelectorAll('.out'));
+    flds.forEach(function(el){
+      el.setAttribute('spellcheck','false');el.setAttribute('contenteditable','true');
+      if(/^(sum|bpm|pser|pnum)$/.test(el.getAttribute('data-f')))el.setAttribute('inputmode','numeric');
+      if(el.getAttribute('data-f')==='datefull')el.textContent=todayLong();
+    });
+    $('kind-title').textContent=k.title;
+    $('guide-list').innerHTML=k.steps.map(function(s){return '<li>'+s+'</li>';}).join('');
+    $('trk-box').hidden=(kind!=='lease');
+    $('trk').checked=false; applyTrackout();
+    $('chooser').hidden=true; $('editor').hidden=false;
+    derive();
+    window.scrollTo(0,0);
+    requestAnimationFrame(function(){ if(window.innerWidth<900)fitWidth(); else setZoom(1); });
+    if(location.hash!=='#'+kind) history.replaceState(null,'','#'+kind);
+  }
+  function showChooser(){
+    current=null;flds=[];outs=[];doc.innerHTML='';
+    $('editor').hidden=true;$('chooser').hidden=false;
+    if(location.hash) history.replaceState(null,'',location.pathname);
+    window.scrollTo(0,0);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.card'),function(c){
+    c.addEventListener('click',function(){mount(c.getAttribute('data-kind'));});
   });
-
-  if (TOUCH){
-    document.getElementById('tip').textContent =
-      'Нажми на подсвеченное место в договоре и вписывай прямо в текст. Кнопками сверху можно приблизить.';
-  }
+  $('btn-back').addEventListener('click',function(){
+    var filled=flds.some(function(el){return el.getAttribute('data-f')!=='datefull'&&el.textContent.trim();});
+    if(filled&&!confirm('Вернуться к выбору? Введённые данные сотрутся.'))return;
+    showChooser();
+  });
+  window.addEventListener('hashchange',function(){var h=location.hash.slice(1);if(KINDS[h]&&h!==current)mount(h);else if(!h&&current)showChooser();});
 
   /* ================= экспорт ================= */
   function fileBase(){
-    var beat = getVal('beat') || 'бит';
-    var fio  = shortFio(getVal('fio')) || 'приобретатель';
-    return ('Договор — ' + beat + ' — ' + fio).replace(/[\\/:*?"<>|]/g,'-');
+    var beat=getVal('beat')||'бит',fio=shortFio(getVal('fio'))||'покупатель';
+    return (KINDS[current].file+' — '+beat+' — '+fio).replace(/[\\/:*?"<>|]/g,'-');
   }
 
-  var btnPdf = document.getElementById('btn-pdf');
-  var btnDoc = document.getElementById('btn-doc');
-
-  btnPdf.addEventListener('click', function(){
-    if (typeof html2pdf === 'undefined'){
-      alert('Не удалось загрузить модуль PDF (нет интернета?).\nОткроется окно печати — выбери «Сохранить как PDF».');
-      window.print();
-      return;
-    }
-    var old = btnPdf.textContent;
-    var prevZoom = zoom;
-    btnPdf.disabled = true; btnPdf.textContent = 'Готовлю PDF…';
-    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-    document.body.classList.add('exporting');
-    page.style.transform = 'none';
-
-    function restore(){
-      document.body.classList.remove('exporting');
-      setZoom(prevZoom);
-      btnPdf.disabled = false; btnPdf.textContent = old;
-    }
-
+  var btnPdf=$('btn-pdf');
+  btnPdf.addEventListener('click',function(){
+    if(typeof html2pdf==='undefined'){alert('Не удалось загрузить модуль PDF (нет интернета?).\nОткроется окно печати — выбери «Сохранить как PDF».');window.print();return;}
+    var old=btnPdf.textContent,prev=zoom;
+    btnPdf.disabled=true;btnPdf.textContent='Готовлю PDF…';
+    if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+    document.body.classList.add('exporting');page.style.transform='none';
+    function restore(){document.body.classList.remove('exporting');setZoom(prev);btnPdf.disabled=false;btnPdf.textContent=old;}
     html2pdf().set({
-      margin:     [18, 20, 18, 16],
-      filename:   fileBase() + '.pdf',
-      image:      { type:'jpeg', quality:0.9 },
-      /* windowWidth здесь не задаём: на телефоне он расходился с настоящей
-         шириной окна, html2canvas мерил текст в одной системе координат,
-         а рисовал в другой — строки смещались */
-      html2canvas:{ scale:2, backgroundColor:'#ffffff', logging:false },
-      jsPDF:      { unit:'mm', format:'a4', orientation:'portrait' },
-      pagebreak:  { mode:['css','legacy'], avoid:['table','h3','li'] }
-    }).from(document.getElementById('doc')).save().then(function(){
-      restore();
-    }).catch(function(err){
-      restore();
-      alert('Не получилось собрать PDF: ' + err + '\nОткроется окно печати.');
-      window.print();
-    });
+      margin:[18,20,18,16],
+      filename:fileBase()+'.pdf',
+      image:{type:'jpeg',quality:.9},
+      /* windowWidth не задаём: на телефоне он расходился с шириной окна и строки съезжали */
+      html2canvas:{scale:2,backgroundColor:'#ffffff',logging:false},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['css','legacy'],avoid:['table','h3','li']}
+    }).from(doc).save().then(restore).catch(function(err){restore();alert('Не получилось собрать PDF: '+err+'\nОткроется окно печати.');window.print();});
   });
 
-  btnDoc.addEventListener('click', function(){
-    var css =
-      'body{font-family:"Times New Roman",serif;font-size:10.5pt;line-height:1.35;text-align:justify}' +
-      'h1{font-size:13pt;text-align:center;text-transform:uppercase}' +
-      'h2{font-size:11pt;font-weight:normal;text-align:center}' +
-      'h3{font-size:11pt;text-align:center;text-transform:uppercase}' +
-      '.dalee{text-align:center;font-size:10pt}' +
-      'table.id{border-collapse:collapse;width:100%;font-size:10pt}' +
-      'table.id td,table.id th{border:1px solid #000;padding:4px 6px;text-align:left;vertical-align:top}' +
-      'table.id th{background:#f2f2f2;font-weight:bold}' +
-      'table.sign{width:100%;border-collapse:collapse;font-size:10pt}' +
-      'table.sign td{width:50%;vertical-align:top;padding:0 10px 0 0;text-align:left}' +
-      '.party{font-weight:bold}.sigline{margin-top:28px}' +
-      'ul{list-style:none;padding-left:24px}' +
-      '.fld,.out{font-weight:bold}';
-
-    /* берём копию, подставляем подсказки вместо пустых полей */
-    var clone = document.getElementById('doc').cloneNode(true);
-    Array.prototype.forEach.call(clone.querySelectorAll('.fld,.out'), function(el){
-      el.removeAttribute('contenteditable');
-      el.removeAttribute('spellcheck');
-      if (!el.textContent.trim()){
-        el.textContent = el.getAttribute('data-ph') || '';
-        el.setAttribute('style', el.className.indexOf('fld') !== -1
-          ? 'color:#d00000;font-weight:bold'
-          : 'font-weight:bold');
-      }
+  $('btn-doc').addEventListener('click',function(){
+    var css='body{font-family:"Times New Roman",serif;font-size:10.5pt;line-height:1.35;text-align:justify}'+
+      'h1{font-size:13pt;text-align:center;text-transform:uppercase}h2{font-size:11pt;font-weight:normal;text-align:center}'+
+      'h3{font-size:11pt;text-align:center;text-transform:uppercase}.dalee{text-align:center;font-size:10pt}'+
+      'table.id{border-collapse:collapse;width:100%;font-size:10pt}table.id td,table.id th{border:1px solid #000;padding:4px 6px;text-align:left;vertical-align:top}'+
+      'table.id th{background:#f2f2f2;font-weight:bold}table.sign{width:100%;border-collapse:collapse;font-size:10pt}'+
+      'table.sign td{width:50%;vertical-align:top;padding:0 10px 0 0;text-align:left}.party{font-weight:bold}.sigline{margin-top:28px}'+
+      'ul{list-style:none;padding-left:24px}.fld,.out{font-weight:bold}';
+    var clone=doc.cloneNode(true);
+    Array.prototype.forEach.call(clone.querySelectorAll('[hidden]'),function(el){el.parentNode.removeChild(el);});
+    Array.prototype.forEach.call(clone.querySelectorAll('.fld,.out'),function(el){
+      el.removeAttribute('contenteditable');el.removeAttribute('spellcheck');el.removeAttribute('inputmode');
+      if(!el.textContent.trim()){el.textContent=el.getAttribute('data-ph')||'';el.setAttribute('style',el.className.indexOf('fld')!==-1?'color:#d00000;font-weight:bold':'font-weight:bold');}
     });
-    var body = clone.innerHTML.replace(
-      /<div class="cityrow">([\s\S]*?)<\/div>\s*<\/div>|<div class="cityrow">([\s\S]*?)<\/div>/,
-      function(m){
-        var right = (m.match(/data-f="datefull"[^>]*>([\s\S]*?)<\/span>/) || [,''])[1];
-        return '<table style="width:100%;border:none"><tr>' +
-               '<td style="border:none;text-align:left;font-weight:bold">г. Екатеринбург</td>' +
-               '<td style="border:none;text-align:right;font-weight:bold">' + right + '</td>' +
-               '</tr></table>';
-      }
-    );
-
-    var html =
-      '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
-      'xmlns:w="urn:schemas-microsoft-com:office:word" ' +
-      'xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8">' +
-      '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View>' +
-      '<w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->' +
-      '<style>@page{size:A4;margin:2cm 1.6cm 2cm 2cm}' + css + '</style>' +
-      '</head><body>' + body + '</body></html>';
-
-    var blob = new Blob(['﻿', html], {type:'application/msword'});
-    var url  = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url; a.download = fileBase() + '.doc';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+    var city=clone.querySelector('.cityrow');
+    if(city){
+      var d=city.querySelector('[data-f="datefull"]'),t=document.createElement('table');
+      t.setAttribute('style','width:100%;border:none');
+      t.innerHTML='<tr><td style="border:none;text-align:left;font-weight:bold">г. Екатеринбург</td><td style="border:none;text-align:right;font-weight:bold">'+(d?d.textContent:'')+'</td></tr>';
+      city.parentNode.replaceChild(t,city);
+    }
+    var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8">'+
+      '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->'+
+      '<style>@page{size:A4;margin:2cm 1.6cm 2cm 2cm}'+css+'</style></head><body>'+clone.innerHTML+'</body></html>';
+    var blob=new Blob(['﻿',html],{type:'application/msword'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=fileBase()+'.doc';document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},1500);
   });
+
+  /* ================= старт ================= */
+  var h=location.hash.slice(1);
+  if(KINDS[h]) mount(h); else showChooser();
 })();
 </script>
 </body>
