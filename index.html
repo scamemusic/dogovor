@@ -22,6 +22,15 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
+  /* Мобильные браузеры (Chrome на Android, Safari) сами укрупняют абзацы,
+     если блок шире экрана, — а лист A4 на телефоне всегда шире. Кнопка PDF
+     фотографирует страницу как есть: абзацы выходили вдвое крупнее полей,
+     а договор растягивался с 8 страниц до 16. Запрещаем это укрупнение. */
+  html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}
+  #doc,#doc *{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  /* страховка для браузеров, которые text-size-adjust игнорируют:
+     блоки с заданным max-height Chrome не укрупняет */
+  #doc p,#doc li,#doc td,#doc th,#doc div,#doc h1,#doc h2,#doc h3{max-height:999999px}
   body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--ui);min-height:100vh;overflow-x:hidden}
 
   /* ---------- глянцевые пузыри на фоне ---------- */
