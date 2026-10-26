@@ -107,6 +107,36 @@
   .btn:hover{filter:brightness(1.08)}
   .btn:disabled{opacity:.55;cursor:progress}
 
+  /* плашка «открой в браузере» */
+  .inapp{position:relative;z-index:30;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    padding:12px 16px;background:linear-gradient(135deg,#7c4dff,#b35cff);color:#fff;font-size:13px;line-height:1.45}
+  .inapp[hidden]{display:none}
+  .inapp-text{flex:1 1 260px}
+  .inapp-text > b{display:block;font-size:14px;margin-bottom:2px}
+  .inapp-btns{display:flex;gap:8px}
+  .inapp button,.help button{border:none;border-radius:9px;padding:10px 14px;font:700 13px var(--ui);cursor:pointer;
+    background:#fff;color:#2a1460}
+  .inapp button.ghost{background:rgba(255,255,255,.18);color:#fff;padding:10px 12px}
+
+  /* окно-подсказка */
+  .help{position:fixed;inset:0;z-index:60;background:rgba(6,4,12,.7);display:flex;align-items:center;justify-content:center;padding:18px}
+  .help[hidden]{display:none}
+  .help-box{max-width:420px;width:100%;background:#15112a;border:1px solid var(--line);border-radius:16px;padding:22px;color:var(--ink);
+    box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  .help-box h3{margin:0 0 10px;font:800 19px/1.2 var(--logo)}
+  .help-box p{margin:0 0 18px;color:#d8d2f5;font-size:14px;line-height:1.55}
+  .help-box b{color:#fff}
+  .help-btns{display:flex;gap:8px;flex-wrap:wrap}
+  .help-btns button{flex:1 1 auto}
+  .help-btns .ghost{background:rgba(196,188,255,.14);color:var(--ink);border:1px solid var(--line)}
+  .help-btns button[hidden]{display:none}
+
+  /* уведомление */
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:70;max-width:90vw;
+    background:#efeaff;color:#1a0f3a;font:700 13px var(--ui);padding:11px 16px;border-radius:11px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+  .toast[hidden]{display:none}
+  body.exporting .inapp,body.exporting .toast,body.exporting .help{display:none !important}
+
   /* инструкция */
   .guide{max-width:calc(210mm + 40px);margin:18px auto 0;padding:0 20px}
   .guide details{border:1px solid var(--line);border-radius:14px;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
@@ -196,7 +226,7 @@
   @page{size:A4;margin:18mm 16mm 18mm 20mm}
   @media print{
     body{background:#fff;color:#000}
-    .orbs,.grain,.bar,.guide,#chooser{display:none !important}
+    .orbs,.grain,.bar,.guide,#chooser,.inapp,.help,.toast{display:none !important}
     .wrap{padding:0 !important;display:block !important;overflow:visible !important}
     .stage{width:auto !important;height:auto !important}
     .page{width:auto !important;padding:0 !important;box-shadow:none !important;transform:none !important}
@@ -208,6 +238,30 @@
 
 <div class="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div></div>
 <div class="grain"></div>
+
+<div id="inapp" class="inapp" hidden>
+  <div class="inapp-text">
+    <b>Открой сайт в браузере, иначе договор не скачается.</b>
+    <span id="inapp-how"></span>
+  </div>
+  <div class="inapp-btns">
+    <button type="button" id="inapp-copy">Скопировать ссылку на сайт</button>
+    <button type="button" id="inapp-close" class="ghost" aria-label="Скрыть">✕</button>
+  </div>
+</div>
+
+<div id="help" class="help" hidden>
+  <div class="help-box" role="dialog" aria-modal="true">
+    <h3 id="help-title"></h3>
+    <p id="help-text"></p>
+    <div class="help-btns">
+      <button type="button" id="help-copy">Скопировать ссылку на сайт</button>
+      <button type="button" id="help-close" class="ghost">Понятно</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
 
 <div class="shell">
 
@@ -761,6 +815,18 @@
   var $=function(id){return document.getElementById(id);};
   var doc=$('doc'), page=$('page'), stage=$('stage');
   var TOUCH=window.matchMedia&&window.matchMedia('(pointer: coarse)').matches;
+
+  /* встроенный браузер приложения (там не работает скачивание) */
+  var UA=navigator.userAgent||'';
+  var IS_IOS=/iPhone|iPad|iPod/i.test(UA)||(/Macintosh/.test(UA)&&navigator.maxTouchPoints>1);
+  var APP=(window.TelegramWebviewProxy||window.TelegramWebview||/Telegram/i.test(UA))?'telegram':
+          /VKAndroidApp|VKClient|vkontakte|com\.vk\./i.test(UA)?'vk':
+          /Instagram/i.test(UA)?'instagram':
+          /FBAN|FBAV|FB_IAB/i.test(UA)?'facebook':
+          /OKApp|OdnoklassnikiApp/i.test(UA)?'ok':'';
+  var IN_APP=!!APP||
+    /;\s*wv\)/.test(UA)||                                      /* Android WebView */
+    (IS_IOS&&/AppleWebKit/.test(UA)&&!/Safari\//.test(UA));    /* iOS WKWebView без Safari */
   if(TOUCH) document.body.classList.add('touch');
 
   var KINDS={
@@ -919,7 +985,10 @@
       html2canvas:{scale:2,backgroundColor:'#ffffff',logging:false},
       jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
       pagebreak:{mode:['css','legacy'],avoid:['table','h3','li']}
-    }).from(doc).save().then(restore).catch(function(err){restore();alert('Не получилось собрать PDF: '+err+'\nОткроется окно печати.');window.print();});
+    }).from(doc).outputPdf('blob').then(function(blob){
+      restore();
+      deliver(new Blob([blob],{type:'application/pdf'}),fileBase()+'.pdf');
+    }).catch(function(err){restore();showHelp('fail','Не получилось собрать PDF: '+err);});
   });
 
   $('btn-doc').addEventListener('click',function(){
@@ -946,10 +1015,84 @@
     var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8">'+
       '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->'+
       '<style>@page{size:A4;margin:2cm 1.6cm 2cm 2cm}'+css+'</style></head><body>'+clone.innerHTML+'</body></html>';
-    var blob=new Blob(['﻿',html],{type:'application/msword'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download=fileBase()+'.doc';document.body.appendChild(a);a.click();document.body.removeChild(a);
-    setTimeout(function(){URL.revokeObjectURL(url);},1500);
+    deliver(new Blob(['﻿',html],{type:'application/msword'}),fileBase()+'.doc');
   });
+
+  /* ================= выдача файла ================= */
+  /* Встроенные браузеры приложений (Telegram, VK, Instagram и т.п.) не умеют
+     сохранять файл, собранный на странице: вместо скачивания они предлагают
+     скопировать временную ссылку blob:…, которая нигде больше не открывается.
+     Поэтому на телефонах сначала пробуем системное меню «Поделиться» —
+     через него файл сохраняется в «Файлы»/«Загрузки» или отправляется сразу.
+     Обычное скачивание — для компьютеров и полноценных браузеров. */
+  function canShareFile(file){
+    try{return !!(navigator.canShare&&navigator.share&&navigator.canShare({files:[file]}));}catch(e){return false;}
+  }
+  function plainDownload(blob,name){
+    var url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=name;a.rel='noopener';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    /* на телефоне скачивание стартует не мгновенно — не отзываем ссылку раньше времени */
+    setTimeout(function(){URL.revokeObjectURL(url);},120000);
+  }
+  function deliver(blob,name){
+    var file=null;
+    try{file=new File([blob],name,{type:blob.type});}catch(e){}
+    var preferShare=IN_APP||IS_IOS;
+    if(file&&preferShare&&canShareFile(file)){
+      navigator.share({files:[file],title:name}).then(function(){
+        toast('Готово — файл сохранён или отправлен');
+      }).catch(function(err){
+        if(err&&err.name==='AbortError')return;           /* человек сам закрыл меню */
+        if(IN_APP)showHelp('inapp'); else plainDownload(blob,name);
+      });
+      return;
+    }
+    if(IN_APP){showHelp('inapp');return;}
+    plainDownload(blob,name);
+    toast('Файл скачивается — ищи его в «Загрузках»');
+  }
+
+  /* ================= встроенные браузеры приложений ================= */
+  function howToOpen(){
+    if(APP==='telegram') return 'Нажми <b>⋮</b> или <b>···</b> вверху справа → <b>«Открыть в браузере»</b>.';
+    if(APP==='vk')       return 'Нажми <b>⋮</b> или <b>···</b> вверху справа → <b>«Открыть в браузере»</b>.';
+    if(APP==='instagram')return 'Нажми <b>···</b> вверху справа → <b>«Открыть во внешнем браузере»</b>.';
+    return 'Нажми <b>⋮</b> или <b>···</b> вверху справа → <b>«Открыть в браузере»</b> (Chrome или Safari).';
+  }
+  function siteLink(){return location.origin+location.pathname+(current?'#'+current:'');}
+  function copyLink(btn){
+    var url=siteLink(),done=function(){btn.textContent='Ссылка скопирована ✓';setTimeout(function(){btn.textContent='Скопировать ссылку на сайт';},2500);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){prompt('Скопируй ссылку:',url);});}
+    else prompt('Скопируй ссылку:',url);
+  }
+  function showHelp(kind,extra){
+    var box=$('help');
+    if(kind==='inapp'){
+      $('help-title').textContent='Здесь файл не скачается';
+      $('help-text').innerHTML='Ты открыл сайт внутри приложения — оно не умеет сохранять файлы.<br><br>'+howToOpen()+
+        '<br><br>В браузере придётся заполнить договор ещё раз — это займёт минуту. Данные отсюда туда не переносятся: они нигде не хранятся.';
+      $('help-copy').hidden=false;
+    }else{
+      $('help-title').textContent='Не получилось';
+      $('help-text').innerHTML=(extra?extra+'<br><br>':'')+'Попробуй ещё раз. Если не выйдет — открой сайт в Chrome или Safari, либо напиши <b>t.me/scameikin</b>.';
+      $('help-copy').hidden=true;
+    }
+    box.hidden=false;
+  }
+  $('help-close').addEventListener('click',function(){$('help').hidden=true;});
+  $('help').addEventListener('click',function(e){if(e.target===this)this.hidden=true;});
+  $('help-copy').addEventListener('click',function(){copyLink(this);});
+  $('inapp-copy').addEventListener('click',function(){copyLink(this);});
+  $('inapp-close').addEventListener('click',function(){$('inapp').hidden=true;});
+
+  var toastTimer=null;
+  function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true;},3500);}
+
+  if(IN_APP){
+    $('inapp-how').innerHTML=howToOpen();
+    $('inapp').hidden=false;
+  }
 
   /* ================= старт ================= */
   var h=location.hash.slice(1);
